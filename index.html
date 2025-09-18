@@ -2,59 +2,24 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>XIBIX Markerless AR</title>
+    <title>XIBIX Finaler Test</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-
-    <script>
-        // NEUE, VERBESSERTE VERSION der Platzierungs-Logik
-        AFRAME.registerComponent('place-on-tap', {
-            init: function() {
-                const ground = document.querySelector("#ground-plane");
-                const sceneContent = document.querySelector("#scene-content");
-                
-                sceneContent.setAttribute('visible', 'false');
-                
-                // Wir hören jetzt auf das 'select' Event der gesamten Szene.
-                // Das ist der Standard-Input für AR (Tippen auf den Screen).
-                this.el.sceneEl.addEventListener('select', () => {
-                    // Überprüfen, ob der Platzierungs-Indikator überhaupt sichtbar ist.
-                    if (ground.getAttribute('visible')) {
-                        console.log("AR 'select' Event erkannt!");
-
-                        // Wir holen die aktuelle Position des Indikators...
-                        const groundPosition = ground.object3D.position;
-                        // ...und platzieren unsere Szene genau dort.
-                        sceneContent.setAttribute('position', groundPosition);
-                        sceneContent.setAttribute('visible', 'true');
-                        
-                        // Verstecke den Indikator, nachdem etwas platziert wurde.
-                        ground.setAttribute('visible', 'false');
-
-                        console.log("Szene platziert bei:", groundPosition);
-                    }
-                });
-            }
-        });
-    </script>
     <style>
         .ar-button { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border: none; background-color: #0078D4; color: white; border-radius: 8px; font-size: 16px; cursor: pointer; z-index: 100; }
     </style>
 </head>
 <body>
     <a-scene 
-        webxr="optionalFeatures: hit-test, dom-overlay; overlayElement: #overlay" 
-        ar-hit-test="target: #ground-plane; type: plane;" 
-        place-on-tap>
+        webxr="optionalFeatures: dom-overlay; overlayElement: #overlay">
         
         <a-light type="ambient" color="#FFF" intensity="0.5"></a-light>
         <a-light type="directional" color="#FFF" intensity="1" position="-1 2 2"></a-light>
 
-        <a-plane id="ground-plane" visible="false" height="2" width="2" rotation="-90 0 0" material="..."></a-plane>
-
-        <a-entity id="scene-content">
-            <a-gltf-model src="./assets/server_racking_system.glb" position="-0.3 0 0" scale="0.1 0.1 0.1"></a-gltf-model>
-            <a-gltf-model src="./assets/microsoft_word.glb" position="0.3 0 0" scale="0.1 0.1 0.1"></a-gltf-model>
-        </a-entity>
+        <a-box 
+            position="0 0 -1" 
+            scale="0.2 0.2 0.2" 
+            color="red">
+        </a-box>
     </a-scene>
 
     <div id="overlay">
@@ -62,4 +27,3 @@
     </div>
 </body>
 </html>
-

@@ -2,43 +2,8 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>XIBIX Interaktives Video</title>
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script>
-        // Diese Komponente steuert jetzt den gesamten Video-Zustand.
-        AFRAMA.registerComponent('interactive-video', {
-            init: function () {
-                const videoEl = document.querySelector('#sample-video');
-                const playIcon = document.querySelector('#play-icon');
-                const videoScreen = document.querySelector('#video-screen');
-
-                this.isPlaying = false;
-
-                this.el.addEventListener('click', () => {
-                    if (!this.isPlaying) {
-                        console.log("Video wird gestartet");
-
-                        // Starte das Video im Hintergrund
-                        videoEl.play();
-
-                        // Tausche das Material der Leinwand auf das Video aus
-                        videoScreen.setAttribute('material', 'src', '#sample-video');
-
-                        // Verstecke das Play-Symbol
-                        playIcon.setAttribute('visible', 'false');
-                        
-                        this.isPlaying = true;
-                    } else {
-                        console.log("Video wird pausiert");
-                        videoEl.pause();
-                        // Zeige das Play-Symbol wieder an
-                        playIcon.setAttribute('visible', 'true');
-                        this.isPlaying = false;
-                    }
-                });
-            }
-        });
-    </script>
+    <title>XIBIX Video in AR</title>
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
     <style>
         .ar-button { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border: none; background-color: #0078D4; color: white; border-radius: 8px; font-size: 16px; cursor: pointer; z-index: 100; }
     </style>
@@ -47,25 +12,16 @@
 
 <a-scene>
     <a-assets>
-        <video id="sample-video" loop="true" src="./xibix-video.mp4" preload="auto"></video>
+        <video id="sample-video" autoplay loop="true" src="./studysmarter.mp4"></video>
     </a-assets>
 
-    <a-entity 
-        id="interactive-screen"
-        position="0 0 -2" 
-        rotation="0 180 0"
-        interactive-video>
-        
-        <a-plane 
-            id="video-screen"
-            width="16" 
-            height="9"
-            >
-        </a-plane>
-
-        <a-triangle id="play-icon" color="#FFFFFF" vertex-c="0 0.15 0.1" vertex-b="-0.1 -0.1 0.1" vertex-a="0.1 -0.1 0.1"></a-triangle>
-
-    </a-entity>
+    <a-video 
+        src="#sample-video" 
+        width="16" 
+        height="9" 
+        position="0 0 -20"
+        rotation="0 180 0">
+    </a-video>
 </a-scene>
 
 <div id="overlay">

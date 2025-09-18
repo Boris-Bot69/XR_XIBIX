@@ -4,72 +4,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>XIBIX Markerless AR</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-
     <script>
-        // Diese Komponente wartet auf einen Klick auf eine erkannte Oberfläche
-        // und platziert dann unsere 3D-Szene an dieser Stelle.
         AFRAME.registerComponent('place-on-tap', {
             init: function() {
                 const ground = document.querySelector("#ground-plane");
                 const sceneContent = document.querySelector("#scene-content");
-
-                // Unsere 3D-Szene ist am Anfang unsichtbar
                 sceneContent.setAttribute('visible', 'false');
 
                 ground.addEventListener('click', (event) => {
-                    // Hole die Klick-Position
-                    const clickPosition = event.detail.intersection.point;
+                    // DEBUGGING: Eine Nachricht in die Konsole schreiben, um den Klick zu bestätigen
+                    console.log("Oberfläche angetippt!");
 
-                    // Platziere unsere Szene an dieser Position und mache sie sichtbar
+                    const clickPosition = event.detail.intersection.point;
                     sceneContent.setAttribute('position', clickPosition);
                     sceneContent.setAttribute('visible', 'true');
-
-                    // Verstecke den Platzierungs-Indikator, nachdem etwas platziert wurde
                     ground.setAttribute('visible', 'false');
+
+                    // DEBUGGING: Die Position in der Konsole ausgeben
+                    console.log("Szene platziert bei:", clickPosition);
                 });
             }
         });
     </script>
     <style>
-        /* Ein einfacher "Enter AR" Button */
-        .ar-button {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 12px 24px;
-            border: none;
-            background-color: #0078D4;
-            color: white;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            z-index: 100;
-        }
+        .ar-button { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border: none; background-color: #0078D4; color: white; border-radius: 8px; font-size: 16px; cursor: pointer; z-index: 100; }
     </style>
 </head>
 <body>
-<a-scene
-        webxr="optionalFeatures: hit-test, dom-overlay; overlayElement: #overlay"
-        ar-hit-test="target: #ground-plane; type: plane;"
-        place-on-tap>
+<a-scene webxr="optionalFeatures: hit-test, dom-overlay; overlayElement: #overlay" ar-hit-test="target: #ground-plane; type: plane;" place-on-tap>
+
+    <a-light type="ambient" color="#FFF" intensity="0.5"></a-light>
+    <a-light type="directional" color="#FFF" intensity="1" position="-1 2 2"></a-light>
 
     <a-plane id="ground-plane" height="2" width="2" rotation="-90 0 0" material="src: https://cdn.glitch.global/a8c79b9a-422a-4c28-984c-35207b71341c/grid.png; transparent: true; opacity: 0.5"></a-plane>
 
     <a-entity id="scene-content">
-
-        <a-gltf-model
-                src="./assets/server_racking_system.glb"
-                position="-0.3 0 0"
-                scale="0.1 0.1 0.1">
-        </a-gltf-model>
-
-        <a-gltf-model
-                src="./assets/microsoft_word.glb"
-                position="0.3 0 0"
-                scale="0.1 0.1 0.1">
-        </a-gltf-model>
-
+        <a-gltf-model src="./assets/server_racking_system.glb" position="-0.3 0 0" scale="0.1 0.1 0.1"></a-gltf-model>
+        <a-gltf-model src="./assets/microsoft_word.glb" position="0.3 0 0" scale="0.1 0.1 0.1"></a-gltf-model>
     </a-entity>
 </a-scene>
 

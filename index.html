@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>XIBIX Finaler Test</title>
+    <title>XIBIX AR - Strichmännchen</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
     <style>
         .ar-button { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border: none; background-color: #0078D4; color: white; border-radius: 8px; font-size: 16px; cursor: pointer; z-index: 100; }
@@ -15,12 +15,48 @@
         <a-light type="ambient" color="#FFF" intensity="0.5"></a-light>
         <a-light type="directional" color="#FFF" intensity="1" position="-1 2 2"></a-light>
 
-        <a-entity position="0 0 -1">
-            <a-gltf-model 
-                src="https://cdn.glitch.global/66a7141a-c779-4524-b636-31b3e5519d12/astronaut.glb"
-                position="-0.3 0 0" 
-                scale="0.2 0.2 0.2">
-            </a-gltf-model>
+        <a-entity id="stick-figure" position="0 0 -1">
+            
+            <a-sphere 
+                position="0 0.6 0" 
+                radius="0.1" 
+                color="#FFFFFF">
+            </a-sphere>
+
+            <a-box 
+                position="0 0.3 0" 
+                scale="0.1 0.4 0.1" 
+                color="#FFFFFF">
+            </a-box>
+
+            <a-box 
+                position="-0.25 0.4 0" 
+                rotation="0 0 45" 
+                scale="0.08 0.3 0.08" 
+                color="#FFFFFF">
+            </a-box>
+
+            <a-box 
+                position="0.25 0.4 0" 
+                rotation="0 0 -45" 
+                scale="0.08 0.3 0.08" 
+                color="#FFFFFF">
+            </a-box>
+
+            <a-box 
+                position="-0.1 0.0 0" 
+                rotation="0 0 25" 
+                scale="0.08 0.4 0.08" 
+                color="#FFFFFF">
+            </a-box>
+
+            <a-box 
+                position="0.1 0.0 0" 
+                rotation="0 0 -25" 
+                scale="0.08 0.4 0.08" 
+                color="#FFFFFF">
+            </a-box>
+
         </a-entity>
     </a-scene>
 
@@ -29,4 +65,3 @@
     </div>
 </body>
 </html>
-

@@ -3,7 +3,27 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>XIBIX Video in AR</title>
-    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script>
+        // Diese Komponente kümmert sich um das Abspielen des Videos per Klick.
+        AFRAME.registerComponent('video-controller', {
+            init: function () {
+                // Warte, bis die Metadaten des Videos geladen sind.
+                const videoEl = this.el.sceneEl.querySelector('#sample-video');
+                
+                // Füge einen Event-Listener hinzu, der auf Klicks auf die Video-Leinwand wartet.
+                this.el.addEventListener('click', () => {
+                    if (videoEl.paused) {
+                        console.log("Video wird gestartet");
+                        videoEl.play();
+                    } else {
+                        console.log("Video wird pausiert");
+                        videoEl.pause();
+                    }
+                });
+            }
+        });
+    </script>
     <style>
         .ar-button { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border: none; background-color: #0078D4; color: white; border-radius: 8px; font-size: 16px; cursor: pointer; z-index: 100; }
     </style>
@@ -12,14 +32,15 @@
 
 <a-scene>
     <a-assets>
-        <video id="sample-video" autoplay loop="true" src="./studysmarter.mp4"></video>
+        <video id="sample-video" loop="true" src="./xibix-video.mp4" preload="auto"></video>
     </a-assets>
 
-    <a-video
-            src="#sample-video"
-            width="16"
-            height="9"
-            position="0 0 -1">
+    <a-video 
+        src="#sample-video" 
+        width="1.6" 
+        height="0.9" 
+        position="0 0 -2" rotation="0 180 0"
+        video-controller>
     </a-video>
 </a-scene>
 

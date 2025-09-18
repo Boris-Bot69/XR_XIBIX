@@ -4,24 +4,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>XIBIX Markerless AR</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
     <script>
+        // NEUE, VERBESSERTE VERSION der Platzierungs-Logik
         AFRAME.registerComponent('place-on-tap', {
             init: function() {
                 const ground = document.querySelector("#ground-plane");
                 const sceneContent = document.querySelector("#scene-content");
+                
                 sceneContent.setAttribute('visible', 'false');
+                
+                // Wir hören jetzt auf das 'select' Event der gesamten Szene.
+                // Das ist der Standard-Input für AR (Tippen auf den Screen).
+                this.el.sceneEl.addEventListener('select', () => {
+                    // Überprüfen, ob der Platzierungs-Indikator überhaupt sichtbar ist.
+                    if (ground.getAttribute('visible')) {
+                        console.log("AR 'select' Event erkannt!");
 
-                ground.addEventListener('click', (event) => {
-                    // DEBUGGING: Eine Nachricht in die Konsole schreiben, um den Klick zu bestätigen
-                    console.log("Oberfläche angetippt!");
+                        // Wir holen die aktuelle Position des Indikators...
+                        const groundPosition = ground.object3D.position;
+                        // ...und platzieren unsere Szene genau dort.
+                        sceneContent.setAttribute('position', groundPosition);
+                        sceneContent.setAttribute('visible', 'true');
+                        
+                        // Verstecke den Indikator, nachdem etwas platziert wurde.
+                        ground.setAttribute('visible', 'false');
 
-                    const clickPosition = event.detail.intersection.point;
-                    sceneContent.setAttribute('position', clickPosition);
-                    sceneContent.setAttribute('visible', 'true');
-                    ground.setAttribute('visible', 'false');
-
-                    // DEBUGGING: Die Position in der Konsole ausgeben
-                    console.log("Szene platziert bei:", clickPosition);
+                        console.log("Szene platziert bei:", groundPosition);
+                    }
                 });
             }
         });
@@ -31,21 +41,24 @@
     </style>
 </head>
 <body>
-<a-scene webxr="optionalFeatures: hit-test, dom-overlay; overlayElement: #overlay" ar-hit-test="target: #ground-plane; type: plane;" place-on-tap>
+    <a-scene 
+        webxr="optionalFeatures: hit-test, dom-overlay; overlayElement: #overlay" 
+        ar-hit-test="target: #ground-plane; type: plane;" 
+        place-on-tap>
+        
+        <a-light type="ambient" color="#FFF" intensity="0.5"></a-light>
+        <a-light type="directional" color="#FFF" intensity="1" position="-1 2 2"></a-light>
 
-    <a-light type="ambient" color="#FFF" intensity="0.5"></a-light>
-    <a-light type="directional" color="#FFF" intensity="1" position="-1 2 2"></a-light>
+        <a-plane id="ground-plane" height="2" width="2" rotation="-90 0 0" material="src: https://cdn.glitch.global/a8c79b9a-422a-4c28-984c-35207b71341c/grid.png; transparent: true; opacity: 0.5"></a-plane>
 
-    <a-plane id="ground-plane" height="2" width="2" rotation="-90 0 0" material="src: https://cdn.glitch.global/a8c79b9a-422a-4c28-984c-35207b71341c/grid.png; transparent: true; opacity: 0.5"></a-plane>
+        <a-entity id="scene-content">
+            <a-gltf-model src="./assets/server_racking_system.glb" position="-0.3 0 0" scale="0.1 0.1 0.1"></a-gltf-model>
+            <a-gltf-model src="./assets/microsoft_word.glb" position="0.3 0 0" scale="0.1 0.1 0.1"></a-gltf-model>
+        </a-entity>
+    </a-scene>
 
-    <a-entity id="scene-content">
-        <a-gltf-model src="./assets/server_racking_system.glb" position="-0.3 0 0" scale="0.1 0.1 0.1"></a-gltf-model>
-        <a-gltf-model src="./assets/microsoft_word.glb" position="0.3 0 0" scale="0.1 0.1 0.1"></a-gltf-model>
-    </a-entity>
-</a-scene>
-
-<div id="overlay">
-    <button class="ar-button" onclick="document.querySelector('a-scene').enterVR(true)">Enter AR</button>
-</div>
+    <div id="overlay">
+        <button class="ar-button" onclick="document.querySelector('a-scene').enterVR(true)">Enter AR</button>
+    </div>
 </body>
 </html>

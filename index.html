@@ -2,8 +2,8 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>XIBIX Finaler Test</title>
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <title>XIBIX Video in AR</title>
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
     <style>
         .ar-button { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border: none; background-color: #0078D4; color: white; border-radius: 8px; font-size: 16px; cursor: pointer; z-index: 100; }
     </style>
@@ -12,14 +12,20 @@
 
 <a-scene>
     <a-assets>
-        <video id="sample video" autoplay loop="true"
-               src="https://www.youtube.com/watch?v=CaCFD1CAAuc"></video>
+        <video id="sample-video" autoplay loop="true" src="./studysmarter.mp4"></video>
     </a-assets>
 
-    <a-video src="#sample-video" witdh="16" height="9" position="0 0 -15"></a-video>
+    <a-video
+            src="#sample-video"
+            width="16"
+            height="9"
+            position="0 0 -1">
+    </a-video>
 </a-scene>
+
 <div id="overlay">
     <button class="ar-button" onclick="document.querySelector('a-scene').enterVR(true)">Enter AR</button>
 </div>
+
 </body>
 </html>

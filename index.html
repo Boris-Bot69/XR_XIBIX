@@ -3,7 +3,8 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>XIBIX Video in AR</title>
-    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
     <style>
         .ar-button { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border: none; background-color: #0078D4; color: white; border-radius: 8px; font-size: 16px; cursor: pointer; z-index: 100; }
     </style>
@@ -12,21 +13,44 @@
 
 <a-scene>
     <a-assets>
-        <video id="sample-video" autoplay loop="true" src="./studysmarter.mp4"></video>
+        <video id="sample-video" src="./studysmarter.mp4" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
     </a-assets>
 
-    <a-video 
-        src="#sample-video" 
-        width="16" 
-        height="9" 
-        position="0 0 -20"
-        rotation="0 180 0">
-    </a-video>
+    <a-video
+            src="#sample-video"
+            width="16"
+            height="9"
+            position="0 0 -20"
+            rotation="0 360 0"> </a-video>
 </a-scene>
 
 <div id="overlay">
-    <button class="ar-button" onclick="document.querySelector('a-scene').enterVR(true)">Enter AR</button>
+    <button class="ar-button" onclick="document.querySelector('a-scene').enterVR(true)">Enter AR and rotate your phone left</button>
 </div>
+
+<script>
+    // Define the function that will start the video
+    function playVideo() {
+        // Find the video element by its ID
+        var video = document.querySelector('#sample-video');
+
+        // Check if the video is ready and try to play it
+        if (video.paused) {
+            video.play()
+                .then(() => {
+                    console.log("Video playback started successfully!");
+                })
+                .catch((error) => {
+                    console.error("Error trying to play the video:", error);
+                });
+        }
+    }
+
+    // Add an event listener to the entire window
+    // The '{ once: true }' option means this will only ever happen ONCE,
+    // on the very first click, and then the listener is automatically removed.
+    window.addEventListener('click', playVideo, { once: true });
+</script>
 
 </body>
 </html>

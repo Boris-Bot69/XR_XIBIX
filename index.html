@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>XIBIX Finaler Test</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
 </head>
@@ -14,88 +12,6 @@
     </a-assets>
 
     <a-video src="#sample-video" witdh="16" height="9" position="0 0 -15"></a-video>
-</a-scene>
-<a-scene
-        webxr="optionalFeatures: dom-overlay; overlayElement: #overlay">
-
-    <a-light type="ambient" color="#FFF" intensity="0.5"></a-light>
-    <a-light type="directional" color="#FFF" intensity="1" position="-1 2 2"></a-light>
-
-    <a-entity id="stick-figure" position="0 0 -1" scale="0.5 0.5 0.5">
-
-        <a-animation
-                attribute="position"
-                from="0 0 -1"
-                to="0 0.1 -1"
-                dur="500"
-                direction="alternate"
-                repeat="indefinite"
-                easing="ease-in-out">
-        </a-animation>
-
-        <a-sphere position="0 0.6 0" radius="0.1" color="#FFFFFF">
-            <a-animation
-                    attribute="position"
-                    from="-0.05 0.6 0"
-                    to="0.05 0.6 0"
-                    dur="700"
-                    direction="alternate"
-                    repeat="indefinite"
-                    easing="ease-in-out-sine">
-            </a-animation>
-        </a-sphere>
-
-        <a-box position="0 0.3 0" scale="0.1 0.4 0.1" color="#FFFFFF"></a-box>
-
-        <a-box position="-0.25 0.4 0" rotation="0 0 45" scale="0.08 0.3 0.08" color="#FFFFFF">
-            <a-animation
-                    attribute="rotation"
-                    from="0 0 45"
-                    to="0 0 90"
-                    dur="400"
-                    direction="alternate"
-                    repeat="indefinite"
-                    easing="ease-in-out-cubic">
-            </a-animation>
-        </a-box>
-
-        <a-box position="0.25 0.4 0" rotation="0 0 -45" scale="0.08 0.3 0.08" color="#FFFFFF">
-            <a-animation
-                    attribute="rotation"
-                    from="0 0 -45"
-                    to="0 0 -90"
-                    dur="400"
-                    direction="alternate"
-                    repeat="indefinite"
-                    easing="ease-in-out-cubic">
-            </a-animation>
-        </a-box>
-
-        <a-box position="-0.05 -0.1 0" rotation="0 0 25" scale="0.08 0.4 0.08" color="#FFFFFF">
-            <a-animation
-                    attribute="rotation"
-                    from="0 0 25"
-                    to="0 0 -5"
-                    dur="600"
-                    direction="alternate"
-                    repeat="indefinite"
-                    easing="ease-in-out-back">
-            </a-animation>
-        </a-box>
-
-        <a-box position="0.05 -0.1 0" rotation="0 0 -25" scale="0.08 0.4 0.08" color="#FFFFFF">
-            <a-animation
-                    attribute="rotation"
-                    from="0 0 -25"
-                    to="0 0 5"
-                    dur="600"
-                    delay="600"
-                    direction="alternate"
-                    repeat="indefinite"
-                    easing="ease-in-out-back">
-            </a-animation>
-        </a-box>
-    </a-entity>
 </a-scene>
 
 </body>

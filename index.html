@@ -2,92 +2,70 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>XIBIX Finaler Test</title>
+    <title>XIBIX AR - Der rennende Strichmann</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script>
+        // Diese Komponente agiert als "Regisseur" für unsere Geschichte.
+        // Sie löst alle paar Sekunden das "stolpern"-Event aus.
+        AFRAME.registerComponent('story-director', {
+            init: function() {
+                const stickFigure = document.querySelector("#stick-figure");
+
+                // Starte die "rennen"-Animation am Anfang
+                stickFigure.emit('startRunning');
+
+                // Alle 8 Sekunden soll der Strichmann stolpern
+                setInterval(() => {
+                    console.log("Stolper-Event ausgelöst!");
+                    stickFigure.emit('startTripping');
+                }, 8000); // 8000ms = 8 Sekunden
+            }
+        });
+    </script>
     <style>
         .ar-button { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border: none; background-color: #0078D4; color: white; border-radius: 8px; font-size: 16px; cursor: pointer; z-index: 100; }
     </style>
 </head>
 <body>
-<a-scene
-        webxr="optionalFeatures: dom-overlay; overlayElement: #overlay">
+    <a-scene webxr="optionalFeatures: dom-overlay; overlayElement: #overlay" story-director>
+        
+        <a-light type="ambient" color="#FFF" intensity="0.5"></a-light>
+        <a-light type="directional" color="#FFF" intensity="1" position="-1 2 2"></a-light>
 
-    <a-light type="ambient" color="#FFF" intensity="0.5"></a-light>
-    <a-light type="directional" color="#FFF" intensity="1" position="-1 2 2"></a-light>
+        <a-entity id="stick-figure" position="0 0 -1" scale="0.5 0.5 0.5">
+            
+            <a-animation attribute="rotation" begin="startRunning" from="0 0 0" to="0 360 0" dur="4000" repeat="indefinite" easing="linear"></a-animation>
+            
+            <a-animation attribute="rotation" begin="startTripping" from="0 360 0" to="0 330 -30" dur="300" easing="ease-out-cubic"></a-animation>
+            <a-animation attribute="position" begin="startTripping" to="-0.5 0 -1" dur="500" easing="ease-out-cubic"></a-animation>
 
-    <a-entity 
-        id="stick-figure" 
-        position="0 0 -1" 
-        scale="0.5 0.5 0.5"
-        animation="property: position; to: 0 0.2 -1; dur: 500; dir: alternate; loop: true; easing: easeInOutQuad;">
+            <a-animation attribute="position" begin="recover" to="0 0 -1" dur="1000" easing="ease-in-out-sine"></a-animation>
+            <a-animation attribute="rotation" begin="recover" to="0 0 0" dur="1000" easing="ease-in-out-sine" emit="startRunning"></a-animation>
 
-        <a-sphere position="0 0.6 0" radius="0.1" color="#FFFFFF">
-            <a-animation
-                    attribute="position"
-                    from="-0.05 0.6 0"
-                    to="0.05 0.6 0"
-                    dur="700"
-                    direction="alternate"
-                    repeat="indefinite"
-                    easing="ease-in-out-sine">
-            </a-animation>
-        </a-sphere>
+            <a-sphere position="0 0.6 0" radius="0.1" color="#FFFFFF"></a-sphere>
 
-        <a-box position="0 0.3 0" scale="0.1 0.4 0.1" color="#FFFFFF"></a-box>
+            <a-box position="0 0.3 0" scale="0.1 0.4 0.1" color="#FFFFFF"></a-box>
 
-        <a-box position="-0.25 0.4 0" rotation="0 0 45" scale="0.08 0.3 0.08" color="#FFFFFF">
-            <a-animation
-                    attribute="rotation"
-                    from="0 0 45"
-                    to="0 0 90"
-                    dur="400"
-                    direction="alternate"
-                    repeat="indefinite"
-                    easing="ease-in-out-cubic">
-            </a-animation>
-        </a-box>
+            <a-box id="left-arm" position="-0.25 0.4 0" rotation="0 0 45" scale="0.08 0.3 0.08" color="#FFFFFF">
+                <a-animation attribute="rotation" begin="startRunning" from="0 0 60" to="0 0 -60" dur="500" direction="alternate" repeat="indefinite"></a-animation>
+                <a-animation attribute="rotation" begin="startTripping" to="0 0 110" dur="300" easing="ease-out-back" emit="recover" delay="700"></a-animation>
+            </a-box>
 
-        <a-box position="0.25 0.4 0" rotation="0 0 -45" scale="0.08 0.3 0.08" color="#FFFFFF">
-            <a-animation
-                    attribute="rotation"
-                    from="0 0 -45"
-                    to="0 0 -90"
-                    dur="400"
-                    direction="alternate"
-                    repeat="indefinite"
-                    easing="ease-in-out-cubic">
-            </a-animation>
-        </a-box>
+            <a-box position="0.25 0.4 0" rotation="0 0 -45" scale="0.08 0.3 0.08" color="#FFFFFF">
+                <a-animation attribute="rotation" begin="startRunning" from="0 0 -60" to="0 0 60" dur="500" direction="alternate" repeat="indefinite"></a-animation>
+            </a-box>
 
-        <a-box position="-0.05 -0.1 0" rotation="0 0 25" scale="0.08 0.4 0.08" color="#FFFFFF">
-            <a-animation
-                    attribute="rotation"
-                    from="0 0 25"
-                    to="0 0 -5"
-                    dur="600"
-                    direction="alternate"
-                    repeat="indefinite"
-                    easing="ease-in-out-back">
-            </a-animation>
-        </a-box>
+            <a-box position="-0.05 -0.1 0" rotation="0 0 25" scale="0.08 0.4 0.08" color="#FFFFFF">
+                <a-animation attribute="rotation" begin="startRunning" from="0 0 45" to="0 0 -45" dur="500" direction="alternate" repeat="indefinite"></a-animation>
+            </a-box>
+            <a-box position="0.05 -0.1 0" rotation="0 0 -25" scale="0.08 0.4 0.08" color="#FFFFFF">
+                <a-animation attribute="rotation" begin="startRunning" from="0 0 -45" to="0 0 45" dur="500" direction="alternate" repeat="indefinite"></a-animation>
+            </a-box>
+        </a-entity>
+    </a-scene>
 
-        <a-box position="0.05 -0.1 0" rotation="0 0 -25" scale="0.08 0.4 0.08" color="#FFFFFF">
-            <a-animation
-                    attribute="rotation"
-                    from="0 0 -25"
-                    to="0 0 5"
-                    dur="600"
-                    delay="600"
-                    direction="alternate"
-                    repeat="indefinite"
-                    easing="ease-in-out-back">
-            </a-animation>
-        </a-box>
-    </a-entity>
-</a-scene>
-
-<div id="overlay">
-    <button class="ar-button" onclick="document.querySelector('a-scene').enterVR(true)">Enter AR</button>
-</div>
+    <div id="overlay">
+        <button class="ar-button" onclick="document.querySelector('a-scene').enterVR(true)">Enter AR</button>
+    </div>
 </body>
 </html>

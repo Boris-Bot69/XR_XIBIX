@@ -14,7 +14,6 @@
 <a-scene>
     <a-assets>
         <video id="sample-video" src="./robot_introduction.mp4" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
-        <a-asset-item id="robot-model" src="./cute_home_robot.glb"></a-asset-item>
 
     </a-assets>
 
@@ -22,15 +21,10 @@
             src="#sample-video"
             width="60"
             height="45"
-            position="0 0 -40"
+            position="0 0 -60"
             rotation="0 360 0"> </a-video>
 
-    <a-gltf-model
-            src="#robot-model"
-            position="5 -5 -12"
-            scale="1 1 1"
-            rotation="0 0 0">
-    </a-gltf-model>
+   
 </a-scene>
 
 <div id="overlay">
@@ -63,4 +57,5 @@
 
 </body>
 </html>
+
 

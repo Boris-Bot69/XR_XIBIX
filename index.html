@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>XIBIX Video in AR</title>
-    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
     <style>
         .ar-button { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border: none; background-color: #0078D4; color: white; border-radius: 8px; font-size: 16px; cursor: pointer; z-index: 100; }
@@ -11,60 +11,25 @@
 </head>
 <body>
 
-<script id="video-vertex-shader" type="x-shader/x-vertex">
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-</script>
-
-<script id="video-fragment-shader" type="x-shader/x-fragment">
-    varying vec2 vUv;
-    uniform sampler2D src;
-    uniform float radius;
-
-    // Function to calculate the distance from a rounded rectangle shape
-    float roundedRectangle(vec2 uv, vec2 size, float radius) {
-      // Normalize coordinates to be centered at 0.0
-      uv = uv - 0.5;
-      size = size - radius;
-      return length(max(abs(uv) - size, 0.0)) - radius;
-    }
-
-    void main() {
-      // Get the video color at the current pixel
-      vec4 videoColor = texture2D(src, vUv);
-
-      // Calculate if the pixel is outside our shape
-      float distance = roundedRectangle(vUv, vec2(0.5), radius);
-
-      // If outside, discard the pixel (make it fully transparent)
-      if (distance > 0.0) {
-        discard;
-      }
-
-      // Otherwise, show the video pixel
-      gl_FragColor = videoColor;
-    }
-</script>
-
 <a-scene>
     <a-assets>
         <video id="sample-video" src="./robot_introduction.mp4" loop playsinline webkit-playsinline crossorigin="anonymous"></video>
+
     </a-assets>
 
     <a-video
-            width="80"
+            src="#sample-video"
+            radius="57"
             height="45"
+            theta-length="90"
+            open-ended="true"
             position="0 0 -75"
-            material="
-                shader: roundedVideo;
-                src: #sample-video;
-                radius: 0.1;
-                transparent: true;
-            ">
+            rotation="0 360 0"
+            material="side: back; shader: flat;">
     </a-video>
+
+
+    </a-gltf-model>
 </a-scene>
 
 <div id="overlay">
@@ -72,22 +37,26 @@
 </div>
 
 <script>
-    AFRAME.registerShader('roundedVideo', {
-        schema: {
-            src: {type: 'map', is: 'uniform'},
-            radius: {type: 'number', is: 'uniform', default: 0.1}
-        },
-        vertexShader: document.getElementById('video-vertex-shader').textContent,
-        fragmentShader: document.getElementById('video-fragment-shader').textContent
-    });
-
-    // Function to start the video on user interaction
+    // Define the function that will start the video
     function playVideo() {
+        // Find the video element by its ID
         var video = document.querySelector('#sample-video');
+
+        // Check if the video is ready and try to play it
         if (video.paused) {
-            video.play().catch(e => console.error("Video play failed:", e));
+            video.play()
+                .then(() => {
+                    console.log("Video playback started successfully!");
+                })
+                .catch((error) => {
+                    console.error("Error trying to play the video:", error);
+                });
         }
     }
+
+    // Add an event listener to the entire window
+    // The '{ once: true }' option means this will only ever happen ONCE,
+    // on the very first click, and then the listener is automatically removed.
     window.addEventListener('click', playVideo, { once: true });
 </script>
 
